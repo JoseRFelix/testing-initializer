@@ -1,0 +1,35 @@
+{
+  "plugins": ["unused-imports"],
+  "rules": {
+    // turn on errors for missing imports
+    "import/no-unresolved": "error",
+    "unused-imports/no-unused-imports": "error",
+    // Separate import groups with newline by section
+    "import/order": [
+      "error",
+      {
+        "groups": ["builtin", "external", "internal", "parent", "sibling", "index", "unknown"],
+        "newlines-between": "always"
+      }
+    ],
+    "import/no-anonymous-default-export": "off",
+    "react/display-name": "off",
+    "react/jsx-uses-react": "off",
+    "react/react-in-jsx-scope": "off",
+    "react/no-unescaped-entities": "off"
+  },
+  "settings": {
+    "import/parsers": {
+      "@typescript-eslint/parser": [".ts", ".tsx"]
+    },
+    "import/resolver": {
+      "typescript": {
+        "alwaysTryTypes": true,
+        "project": "./tsconfig.json"
+      }
+    },
+    "react": {
+      "version": "detect"
+    }
+  }
+}

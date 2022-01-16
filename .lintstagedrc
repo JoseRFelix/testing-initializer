@@ -1,0 +1,9 @@
+{
+  "*.+(js|ts|tsx|jsx)": [
+    "eslint --ignore-path .gitignore"
+  ],
+  "*.+(js|json|ts|tsx|jsx)": [
+    "pretty-quick --staged",
+    "git add"
+  ]
+}
