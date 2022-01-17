@@ -1,5 +1,7 @@
-import { factory, manyOf, oneOf } from "@mswjs/data"
+import { manyOf, oneOf } from "@mswjs/data"
+
 import { createDatabase } from "../create-database"
+import { generateId } from "../utils/id"
 
 interface User {
   id: number
@@ -19,26 +21,26 @@ interface Project {
   toDos: ToDo[]
 }
 
-it("should allow to create database with relations", () => {
-  interface APITypes {
-    user: User
-    toDo: ToDo
-    project: Project
-  }
+interface APITypes {
+  user: User
+  toDo: ToDo
+  project: Project
+}
 
+it("should allow to create database with relations", () => {
   const db = createDatabase<APITypes>({
     user: {
-      id: () => 1,
-      name: () => "User 1",
+      id: () => generateId("user-pk"),
+      name: () => `User ${generateId("user-name")}`,
     },
     toDo: {
-      id: () => 1,
-      name: () => "Todo 1",
+      id: () => generateId("toDo-pk"),
+      name: () => `Todo ${generateId("toDo-name")}`,
     },
     project: {
-      id: () => 1,
+      id: () => generateId("project-pk"),
       date: () => new Date().toISOString(),
-      name: () => "Project 1",
+      name: () => `Project ${generateId("project-name")}`,
       user: oneOf("user"),
       toDos: manyOf("toDo"),
     },
@@ -53,5 +55,20 @@ it("should allow to create database with relations", () => {
 
   const project = db.project.create({ user, toDos: [toDo] })
 
-  console.log(project.user)
+  expect(project).toMatchObject({ name: "Project 1", date: project.date, id: 1, user: user, toDos: [toDo] })
+})
+
+it("should create '__pk' property when id is missing", () => {
+  const db = createDatabase({
+    user: {
+      randomId: () => generateId("user-pk"),
+      name: () => `User ${generateId("user-name")}`,
+    },
+  })
+
+  const user = db.user.create()
+
+  expect(user).toHaveProperty("__pk")
+  expect(user).toHaveProperty("randomId")
+  expect(user).toHaveProperty("name")
 })
