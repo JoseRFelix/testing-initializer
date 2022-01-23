@@ -88,7 +88,7 @@ it("should allow to create renderer with relationships coming from props itself"
   }
 })
 
-it("should  allow to create renderer with relationships coming from data", () => {
+it("should allow to create renderer with relationships coming from data", () => {
   interface TestComponentProps {
     project: Project
   }
@@ -129,4 +129,63 @@ it("should  allow to create renderer with relationships coming from data", () =>
   for (const toDo of toDos) {
     expect(screen.getByText(toDo.name)).toBeInTheDocument()
   }
+})
+
+it("should allow to create renderer with wrapper", () => {
+  const TestComponent = () => {
+    return (
+      <div>
+        <p>hey</p>
+      </div>
+    )
+  }
+
+  const renderTestComponent = createRenderer({
+    component: TestComponent,
+    renderFunction: render,
+    wrapper: ({ children }) => (
+      <div>
+        <p>I am inside the wrapper!</p>
+        {children}
+      </div>
+    ),
+  })
+
+  renderTestComponent()
+
+  expect(screen.getByText("I am inside the wrapper!")).toBeInTheDocument()
+  expect(screen.getByText("hey")).toBeInTheDocument()
+})
+
+it("should allow to create renderer with custom render function", () => {
+  const renderWithProviders = (ui: React.ReactElement) => {
+    return {
+      ...render(ui, {
+        wrapper: ({ children }) => (
+          <div>
+            <p>I'am inside a custom render function wrapper!</p>
+            {children}
+          </div>
+        ),
+      }),
+    }
+  }
+
+  const TestComponent = () => {
+    return (
+      <div>
+        <p>hey</p>
+      </div>
+    )
+  }
+
+  const renderTestComponent = createRenderer({
+    component: TestComponent,
+    renderFunction: renderWithProviders,
+  })
+
+  renderTestComponent()
+
+  expect(screen.getByText("I'am inside a custom render function wrapper!")).toBeInTheDocument()
+  expect(screen.getByText("hey")).toBeInTheDocument()
 })
