@@ -9,7 +9,7 @@ type Data<Props> = {
   [K in keyof Props]: Props[K] | ((arg: Props) => Props[K])
 }
 
-interface Options<Props, ExtraProperties> {
+export interface CreateRendererOptions<Props, ExtraProperties> {
   component: ComponentType<Props>
   data?: ExtraProperties | (() => ExtraProperties)
   props?: Data<Props> | ((data: ExtraProperties) => Data<Props>)
@@ -17,7 +17,9 @@ interface Options<Props, ExtraProperties> {
   wrapper?: RenderOptions["wrapper"]
 }
 
-export function createRenderer<Props = {}, ExtraProperties = {}>(options: Options<Props, ExtraProperties>) {
+export function createRenderer<Props = {}, ExtraProperties = {}>(
+  options: CreateRendererOptions<Props, ExtraProperties>
+) {
   return (overrides: Partial<typeof options.data & typeof options.props> = {}) => {
     const { component: Component, data = {}, props = {}, renderFunction } = options
 

@@ -1,12 +1,12 @@
 {
-  "name": "@react-testing/data",
+  "name": "@testing-initializer/data",
   "version": "0.0.1",
   "license": "MIT",
   "scripts": {
     "test": "jest"
   },
   "dependencies": {
-    "@mswjs/data": "^0.8.4"
+    "@mswjs/data": "0.8.4"
   },
   "devDependencies": {
     "@types/jest": "^27.4.0",

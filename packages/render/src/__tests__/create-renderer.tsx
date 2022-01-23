@@ -1,5 +1,5 @@
 import React from "react"
-import { createDatabase, generateId, manyOf, oneOf } from "@react-testing/data"
+import { createDatabase, generateId, manyOf, oneOf } from "@testing-initializer/data"
 import { render, screen } from "@testing-library/react"
 import "@testing-library/jest-dom"
 

@@ -1,1 +1,2 @@
-export const hello = "Hello"
+export { createRenderer } from "./create-renderer"
+export type { CreateRendererOptions } from "./create-renderer"

@@ -1,12 +1,12 @@
 {
-  "name": "@react-testing/render",
+  "name": "@testing-initializer/react",
   "version": "1.0.0",
   "license": "MIT",
   "scripts": {
     "test": "jest"
   },
   "dependencies": {
-    "@react-testing/data": "^0.0.1",
+    "@testing-initializer/data": "^0.0.1",
     "@testing-library/react": "^12.1.2"
   },
   "devDependencies": {
