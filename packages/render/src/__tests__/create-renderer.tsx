@@ -1,6 +1,7 @@
 import React from "react"
 import { createDatabase, generateId, manyOf, oneOf } from "@react-testing/data"
 import { render, screen } from "@testing-library/react"
+import "@testing-library/jest-dom"
 
 import { createRenderer } from "../create-renderer"
 
@@ -46,38 +47,86 @@ const db = createDatabase<APITypes>({
   },
 })
 
-interface TestComponentProps {
-  currentUser: User
-  toDos: ToDo[]
-  project: Project
-}
+it("should allow to create renderer with relationships coming from props itself", () => {
+  interface TestComponentProps {
+    currentUser: User
+    toDos: ToDo[]
+    project: Project
+  }
 
-const TestComponent = ({ currentUser, project, toDos }: TestComponentProps) => {
-  return (
-    <div>
-      <p>{currentUser.name}</p>
-      <p>{project.name}</p>
+  const TestComponent = ({ project }: TestComponentProps) => {
+    return (
       <div>
-        {toDos.map(({ id, name }) => (
-          <p key={id}>{name}</p>
-        ))}
+        <p>{project.user.name}</p>
+        <p>{project.name}</p>
+        <div>
+          {project.toDos.map(({ id, name }) => (
+            <p key={id}>{name}</p>
+          ))}
+        </div>
       </div>
-    </div>
-  )
-}
+    )
+  }
 
-it.only("should ", () => {
-  const renderTestComponent = createRenderer(db, {
+  const renderTestComponent = createRenderer({
     component: TestComponent,
-    data: {
+    props: {
       currentUser: db.user.create(),
       toDos: [db.toDo.create(), db.toDo.create(), db.toDo.create()],
-      project: db.project.create() as unknown as Project,
+      project: ({ currentUser, toDos }) => db.project.create({ toDos, user: currentUser }) as unknown as Project,
     },
     renderFunction: render,
   })
 
-  renderTestComponent()
+  const { project, currentUser, toDos } = renderTestComponent()
 
-  screen.debug()
+  expect(screen.getByText(currentUser.name)).toBeInTheDocument()
+  expect(screen.getByText(project.name)).toBeInTheDocument()
+
+  for (const toDo of toDos) {
+    expect(screen.getByText(toDo.name)).toBeInTheDocument()
+  }
+})
+
+it("should  allow to create renderer with relationships coming from data", () => {
+  interface TestComponentProps {
+    project: Project
+  }
+
+  const TestComponent = ({ project }: TestComponentProps) => {
+    return (
+      <div>
+        <p>{project.user.name}</p>
+        <p>{project.name}</p>
+        <div>
+          {project.toDos.map(({ id, name }) => (
+            <p key={id}>{name}</p>
+          ))}
+        </div>
+      </div>
+    )
+  }
+
+  const renderTestComponent = createRenderer({
+    component: TestComponent,
+    data: {
+      currentUser: db.user.create(),
+      toDos: [db.toDo.create(), db.toDo.create(), db.toDo.create()],
+    },
+    props: ({ currentUser, toDos }) => ({
+      project: db.project.create({ toDos, user: currentUser }) as unknown as Project,
+    }),
+    renderFunction: render,
+  })
+
+  const { project, currentUser, toDos } = renderTestComponent({
+    currentUser: db.user.create({ name: "User override" }),
+  })
+
+  expect(screen.getByText(currentUser.name)).toBeInTheDocument()
+  expect(screen.getByText(project.name)).toBeInTheDocument()
+
+  for (const toDo of toDos) {
+    expect(screen.getByText(toDo.name)).toBeInTheDocument()
+  }
 })
