@@ -193,26 +193,23 @@ Proceed to create your mock database based on this types.
 ```js
 import { createDatabase, generateId } from "@testing-initializer/data"
 
-const db =
-  createDatabase <
-  APITypes >
-  {
-    user: {
-      id: () => generateId("user-pk"),
-      name: () => `User ${generateId("user-name")}`,
-    },
-    toDo: {
-      id: () => generateId("toDo-pk"),
-      name: () => `Todo ${generateId("toDo-name")}`,
-    },
-    project: {
-      id: () => generateId("project-pk"),
-      date: () => new Date().toISOString(),
-      name: () => `Project ${generateId("project-name")}`,
-      user: oneOf("user"),
-      toDos: manyOf("toDo"),
-    },
-  }
+const db = createDatabase<APITypes>({
+	user: {
+		id: () => generateId("user-pk"),
+		name: () => `User ${generateId("user-name")}`,
+	},
+	toDo: {
+		id: () => generateId("toDo-pk"),
+		name: () => `Todo ${generateId("toDo-name")}`,
+	},
+	project: {
+		id: () => generateId("project-pk"),
+		date: () => new  Date().toISOString(),
+		name: () => `Project ${generateId("project-name")}`,
+		user: oneOf("user"),
+		toDos: manyOf("toDo"),
+	},
+})
 ```
 
 Now you can use all database methods available in [@msw/data]("https://github.com/mswjs/data"):
