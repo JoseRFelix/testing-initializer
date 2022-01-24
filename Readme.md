@@ -8,7 +8,17 @@
     src="other/logo.png"
   />
 
+<h1 >Testing Initializer</h1>
 <p>Simple and complete bootstrapping testing utilities that encourage efficient testing practices.</p>
+
+<p align="center">
+  <a href="https://www.npmjs.com/package/testing-initializer" target="_blank">
+    <img src="https://img.shields.io/npm/v/testing-initializer.svg?style=for-the-badge&label=Latest&color=black" alt="Package version" />
+  </a>  
+  <a href="https://www.npmjs.com/package/testing-initializer" target="_blank">
+    <img src="https://img.shields.io/npm/dm/testing-initializer?style=for-the-badge&color=black" alt="Downloads per month" />
+  </a>   
+</p>
 </div>
 
 ## Motivation
