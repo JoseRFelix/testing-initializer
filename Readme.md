@@ -4,8 +4,8 @@
 <img
     height="80"
     width="80"
-    alt="logo"
-    src="https://raw.githubusercontent.com/JoseRFelix/testing-initializer/main/other/logo.png"
+    alt="Testing Initializer logo"
+    src="other/logo.png"
   />
 
 <p>Simple and complete bootstrapping testing utilities that encourage efficient testing practices.</p>
