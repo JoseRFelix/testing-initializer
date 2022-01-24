@@ -125,7 +125,7 @@ const renderTestComponent = createRenderer({
 
 Notice the `data` property. These extra properties are useful for getting generated data outside of the component props.
 
-With that renderer we can render our components consistently within tests:
+With this renderer, we can render our components consistently within tests:
 
 ```js
 it("...", () => {
