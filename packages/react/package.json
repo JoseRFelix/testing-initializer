@@ -6,8 +6,8 @@
     "test": "jest"
   },
   "dependencies": {
-    "@testing-initializer/data": "^0.0.1",
-    "@testing-library/react": "^12.1.2"
+    "@testing-library/react": "^12.1.2",
+    "@testing-initializer/data": "^0.0.1"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^5.16.1",
