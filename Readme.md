@@ -17,7 +17,7 @@ utilities for bootstrapping your tests without boilerplate and facilitate effici
 
 ## React Testing Initializer
 
-This package contains all necessary utilities bootstrapping React components in your tests.
+This package contains all necessary utilities for bootstrapping React components in your tests.
 
 ### Installation
 
