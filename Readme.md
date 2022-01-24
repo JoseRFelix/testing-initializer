@@ -103,7 +103,7 @@ const TestComponent = ({ project }: TestComponentProps) => {
 }
 ```
 
-We can now proceed to create a renderer, a reusable function that render your component with its necessary props:
+We can now proceed to create a renderer, a reusable function that renders your component with its necessary props:
 
 ```js
 import { createRenderer, createDatabase, generateId } from "@testing-initializer/react"
