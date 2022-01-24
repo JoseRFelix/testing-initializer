@@ -1,6 +1,4 @@
 <div align="center">
-<h1>Testing Initializer</h1>
-
 <img
     height="80"
     width="80"
