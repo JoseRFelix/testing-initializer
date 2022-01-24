@@ -1,6 +1,15 @@
-# Testing Initializer
+<div align="center">
+<h1>Testing Initializer</h1>
 
-Simple and complete bootstrapping testing utilities that encourage efficient testing practices.
+<img
+    height="80"
+    width="80"
+    alt="logo"
+    src="https://raw.githubusercontent.com/JoseRFelix/testing-initializer/main/other/logo.png"
+  />
+
+<p>Simple and complete bootstrapping testing utilities that encourage efficient testing practices.</p>
+</div>
 
 ## Motivation
 
@@ -193,23 +202,26 @@ Proceed to create your mock database based on this types.
 ```js
 import { createDatabase, generateId } from "@testing-initializer/data"
 
-const db = createDatabase<APITypes>({
-	user: {
-		id: () => generateId("user-pk"),
-		name: () => `User ${generateId("user-name")}`,
-	},
-	toDo: {
-		id: () => generateId("toDo-pk"),
-		name: () => `Todo ${generateId("toDo-name")}`,
-	},
-	project: {
-		id: () => generateId("project-pk"),
-		date: () => new  Date().toISOString(),
-		name: () => `Project ${generateId("project-name")}`,
-		user: oneOf("user"),
-		toDos: manyOf("toDo"),
-	},
-})
+const db =
+  createDatabase <
+  APITypes >
+  {
+    user: {
+      id: () => generateId("user-pk"),
+      name: () => `User ${generateId("user-name")}`,
+    },
+    toDo: {
+      id: () => generateId("toDo-pk"),
+      name: () => `Todo ${generateId("toDo-name")}`,
+    },
+    project: {
+      id: () => generateId("project-pk"),
+      date: () => new Date().toISOString(),
+      name: () => `Project ${generateId("project-name")}`,
+      user: oneOf("user"),
+      toDos: manyOf("toDo"),
+    },
+  }
 ```
 
 Now you can use all database methods available in [@msw/data]("https://github.com/mswjs/data"):
