@@ -52,57 +52,57 @@ yarn add @testing-initializer/react
 
 First, let's create our mock database:
 
-```js
+```ts
 import { createDatabase, generateId } from "@testing-initializer/react"
 
 interface User {
-	id:  number
-	name:  string
+  id: number
+  name: string
 }
 
 interface ToDo {
-	id:  number
-	name:  string
+  id: number
+  name: string
 }
 
 interface Project {
-	id: number
-	name: string
-	date: string
-	user: User
-	toDos: ToDo[]
+  id: number
+  name: string
+  date: string
+  user: User
+  toDos: ToDo[]
 }
 
 interface APITypes {
-	user: User
-	toDo: ToDo
-	project: Project
+  user: User
+  toDo: ToDo
+  project: Project
 }
 
 const db = createDatabase<APITypes>({
-	user: {
-		id: () => generateId("user-pk"),
-		name: () => `User ${generateId("user-name")}`,
-	},
-	toDo: {
-		id: () => generateId("toDo-pk"),
-		name: () => `Todo ${generateId("toDo-name")}`,
-	},
-	project: {
-		id: () => generateId("project-pk"),
-		date: () => new  Date().toISOString(),
-		name: () => `Project ${generateId("project-name")}`,
-		user: oneOf("user"),
-		toDos: manyOf("toDo"),
-	},
+  user: {
+    id: () => generateId("user-pk"),
+    name: () => `User ${generateId("user-name")}`,
+  },
+  toDo: {
+    id: () => generateId("toDo-pk"),
+    name: () => `Todo ${generateId("toDo-name")}`,
+  },
+  project: {
+    id: () => generateId("project-pk"),
+    date: () => new Date().toISOString(),
+    name: () => `Project ${generateId("project-name")}`,
+    user: oneOf("user"),
+    toDos: manyOf("toDo"),
+  },
 })
 ```
 
 Now, let's say we have the following component:
 
-```js
+```ts
 interface TestComponentProps {
-  project: Project;
+  project: Project
 }
 
 const TestComponent = ({ project }: TestComponentProps) => {
@@ -122,7 +122,7 @@ const TestComponent = ({ project }: TestComponentProps) => {
 
 We can now proceed to create a renderer, a reusable function that renders your component with its necessary props:
 
-```js
+```ts
 import { createRenderer, createDatabase, generateId } from "@testing-initializer/react"
 
 ...
@@ -144,7 +144,7 @@ Notice the `data` property. These extra properties are useful for getting genera
 
 With this renderer, we can render our components consistently within tests:
 
-```js
+```ts
 it("...", () => {
   const { project, currentUser, toDos } = renderTestComponent()
 })
@@ -152,7 +152,7 @@ it("...", () => {
 
 We can also render override its `data` or `props`:
 
-```js
+```ts
 it("...", () => {
   renderTestComponent({ currentUser: db.user.create({ name: "User override" }) })
 })
@@ -160,7 +160,7 @@ it("...", () => {
 
 ## Data Testing Initializer
 
-This package allows you to create a [@msw/data]("https://github.com/mswjs/data") type-safe database. It will read nested
+This package allows you to create a [@msw/data]("https://github.com/mswts/data") type-safe database. It will read nested
 arrays as a `many of` relationship and objects as a `one of` relationship.
 
 ### Installation
@@ -179,62 +179,59 @@ yarn add @testing-initializer/data
 
 First make you have your types available:
 
-```js
+```ts
 interface User {
-	id: number
-	name: string
+  id: number
+  name: string
 }
 
 interface ToDo {
-	id: number
-	name: string
+  id: number
+  name: string
 }
 
 interface Project {
-	id: number
-	name: string
-	date: string
-	user: User
-	toDos: ToDo[]
+  id: number
+  name: string
+  date: string
+  user: User
+  toDos: ToDo[]
 }
 
 interface APITypes {
-	user: User
-	toDo: ToDo
-	project: Project
+  user: User
+  toDo: ToDo
+  project: Project
 }
 ```
 
 Proceed to create your mock database based on this types.
 
-```js
+```ts
 import { createDatabase, generateId } from "@testing-initializer/data"
 
-const db =
-  createDatabase <
-  APITypes >
-  {
-    user: {
-      id: () => generateId("user-pk"),
-      name: () => `User ${generateId("user-name")}`,
-    },
-    toDo: {
-      id: () => generateId("toDo-pk"),
-      name: () => `Todo ${generateId("toDo-name")}`,
-    },
-    project: {
-      id: () => generateId("project-pk"),
-      date: () => new Date().toISOString(),
-      name: () => `Project ${generateId("project-name")}`,
-      user: oneOf("user"),
-      toDos: manyOf("toDo"),
-    },
-  }
+const db = createDatabase<APITypes>({
+  user: {
+    id: () => generateId("user-pk"),
+    name: () => `User ${generateId("user-name")}`,
+  },
+  toDo: {
+    id: () => generateId("toDo-pk"),
+    name: () => `Todo ${generateId("toDo-name")}`,
+  },
+  project: {
+    id: () => generateId("project-pk"),
+    date: () => new Date().toISOString(),
+    name: () => `Project ${generateId("project-name")}`,
+    user: oneOf("user"),
+    toDos: manyOf("toDo"),
+  },
+})
 ```
 
-Now you can use all database methods available in [@msw/data]("https://github.com/mswjs/data"):
+Now you can use all database methods available in [@msw/data]("https://github.com/mswts/data"):
 
-```js
+```ts
 db.user.create()
 db.user.findFirst({ ... })
 db.project.findMany({ ... })
