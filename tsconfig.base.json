@@ -1,7 +1,6 @@
 {
   "compilerOptions": {
     "target": "es5",
-    "module": "esnext",
     "lib": ["dom", "esnext"],
     "declaration": true,
     "sourceMap": true,
@@ -22,6 +21,5 @@
     "incremental": true,
     "declarationMap": true
   },
-  "include": ["packages"],
-  "exclude": ["node_modules"]
+  "include": ["packages"]
 }

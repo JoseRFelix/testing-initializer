@@ -5,7 +5,7 @@
   "scripts": {
     "test": "jest",
     "build": "tsc",
-    "prepare": "npm run build"
+    "prepublishOnly": "npm run jest && npm run build"
   },
   "description": "Simple Testing bootstrapping utilities for React.",
   "main": "dist/index.js",
@@ -48,6 +48,9 @@
   },
   "peerDependencies": {
     "react": ">=16.8.0"
+  },
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org"
   },
   "gitHead": "08f4267c7c03118e06dbaddbd34ccf4121d1307d"
 }

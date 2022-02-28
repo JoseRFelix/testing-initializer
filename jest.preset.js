@@ -12,7 +12,7 @@ module.exports = {
       https://jestjs.io/docs/webpack#handling-static-assets */
     "^.+\\.(jpg|jpeg|png|gif|webp|svg)$": "<rootDir>/src/__mocks__/fileMock.js",
   },
-  testPathIgnorePatterns: ["<rootDir>/node_modules/"],
+  testPathIgnorePatterns: ["<rootDir>/dist/", "<rootDir>/node_modules/"],
   testEnvironment: "node",
   transform: {
     /* Use babel-jest to transpile tests with the next/babel preset
