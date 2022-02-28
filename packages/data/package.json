@@ -24,10 +24,10 @@
   "author": "Jose R. Felix (https://jfelix.info)",
   "repository": {
     "type": "git",
-    "url": "https://github.com/JoseRFelix/testing-initialize"
+    "url": "https://github.com/JoseRFelix/testing-initializer"
   },
   "bugs": {
-    "url": "https://github.com/JoseRFelix/testing-initialize/issues"
+    "url": "https://github.com/JoseRFelix/testing-initializer/issues"
   },
   "homepage": "https://github.com/JoseRFelix/testing-initializer#data-testing-initializer",
   "dependencies": {
