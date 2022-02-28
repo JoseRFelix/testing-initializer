@@ -5,7 +5,7 @@
   "scripts": {
     "test": "jest",
     "build": "tsc",
-    "prepublishOnly": "npm run jest && npm run build"
+    "prepublishOnly": "npm run test && npm run build"
   },
   "description": "Create a mock type-safe database for integration tests.",
   "main": "dist/index.js",
@@ -43,5 +43,5 @@
   "publishConfig": {
     "registry": "https://registry.npmjs.org"
   },
-  "gitHead": "08f4267c7c03118e06dbaddbd34ccf4121d1307d"
+  "gitHead": "b230759e9205ab913455697ef9b3491f66c9f83e"
 }
