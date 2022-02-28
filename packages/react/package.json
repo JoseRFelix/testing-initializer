@@ -1,6 +1,6 @@
 {
   "name": "@testing-initializer/react",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "license": "MIT",
   "scripts": {
     "test": "jest"
@@ -24,7 +24,7 @@
   },
   "homepage": "https://github.com/JoseRFelix/testing-initializer#react-testing-initializer",
   "dependencies": {
-    "@testing-initializer/data": "^0.0.1",
+    "@testing-initializer/data": "^0.0.2",
     "@testing-library/react": "^12.1.2"
   },
   "devDependencies": {
