@@ -479,10 +479,10 @@
     "@types/set-cookie-parser" "^2.4.0"
     set-cookie-parser "^2.4.6"
 
-"@mswjs/data@^0.8.4":
-  version "0.8.4"
-  resolved "https://registry.yarnpkg.com/@mswjs/data/-/data-0.8.4.tgz#1bb3b4fcf7459d0a733813af9bc826d3df631167"
-  integrity sha512-xim4YuYtxNyltqwRr5yirdnHTOhiwGKQmDxmOoNdh+oH4tUoJ2vM29UhpP1uWjWbSRWZiHADxPBjYNfoSI8NRQ==
+"@mswjs/data@0.9.2":
+  version "0.9.2"
+  resolved "https://registry.yarnpkg.com/@mswjs/data/-/data-0.9.2.tgz#b850fcd786e98185e43ca8a3bbc6801e81eeaf47"
+  integrity sha512-hs0LWOAMU0vteW1zTyNlIZfLxTedevSlxFOQdCnA09pETTW1Ovs34LMH2bb7agixJxfHZY+su4i9U0+V3DpfeA==
   dependencies:
     "@types/lodash" "^4.14.172"
     "@types/md5" "^2.3.0"
