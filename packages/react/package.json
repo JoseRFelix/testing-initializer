@@ -3,7 +3,9 @@
   "version": "0.0.2",
   "license": "MIT",
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "build": "tsc",
+    "prepare": "npm run build"
   },
   "description": "Simple Testing bootstrapping utilities for React.",
   "main": "dist/index.js",
@@ -13,6 +15,11 @@
     "mock database",
     "typescript",
     "testing"
+  ],
+  "files": [
+    "dist",
+    "src",
+    "index.ts"
   ],
   "author": "Jose R. Felix (https://jfelix.info)",
   "repository": {
