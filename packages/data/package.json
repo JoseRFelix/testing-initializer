@@ -5,8 +5,26 @@
   "scripts": {
     "test": "jest"
   },
+  "description": "Create a mock type-safe database for integration tests.",
+  "main": "dist/index.js",
+  "typings": "dist/index.d.ts",
+  "keywords": [
+    "data",
+    "mock database",
+    "typescript",
+    "testing"
+  ],
+  "author": "Jose R. Felix (https://jfelix.info)",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/JoseRFelix/testing-initialize"
+  },
+  "bugs": {
+    "url": "https://github.com/JoseRFelix/testing-initialize/issues"
+  },
+  "homepage": "https://github.com/JoseRFelix/testing-initializer#data-testing-initializer",
   "dependencies": {
-    "@mswjs/data": "0.8.4"
+    "@mswjs/data": "0.9.2"
   },
   "devDependencies": {
     "@types/jest": "^27.4.0",
