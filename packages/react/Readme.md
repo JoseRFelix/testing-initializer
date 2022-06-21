@@ -5,13 +5,13 @@ This package contains all necessary utilities for bootstrapping React components
 ### Installation
 
 ```shell
-npm i @testing-initializer/data
+npm i --save-dev @testing-initializer/data
 ```
 
 or with Yarn:
 
 ```shell
-yarn add @testing-initializer/react
+yarn add -D @testing-initializer/react
 ```
 
 ### Usage

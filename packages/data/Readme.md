@@ -6,13 +6,13 @@ arrays as a `many of` relationship and objects as a `one of` relationship.
 ### Installation
 
 ```shell
-npm i @testing-initializer/data
+npm i --save-dev @testing-initializer/data
 ```
 
 or with Yarn:
 
 ```shell
-yarn add @testing-initializer/data
+yarn add -D @testing-initializer/data
 ```
 
 ### Usage

@@ -1,6 +1,6 @@
 {
   "name": "@testing-initializer/react",
-  "version": "0.0.6",
+  "version": "0.1.1",
   "license": "MIT",
   "scripts": {
     "test": "jest",
@@ -31,7 +31,7 @@
   },
   "homepage": "https://github.com/JoseRFelix/testing-initializer#react-testing-initializer",
   "dependencies": {
-    "@testing-initializer/data": "^0.0.6"
+    "@testing-initializer/data": "^0.1.1"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^5.16.1",
@@ -50,7 +50,8 @@
     "@testing-library/react": ">=11.2.6"
   },
   "publishConfig": {
-    "registry": "https://registry.npmjs.org"
+    "registry": "https://registry.npmjs.org",
+    "access": "public"
   },
   "gitHead": "b230759e9205ab913455697ef9b3491f66c9f83e"
 }
