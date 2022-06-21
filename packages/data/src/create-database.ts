@@ -5,8 +5,10 @@ import { PrimaryKeyGetter } from "@mswjs/data/lib/primaryKey"
 
 import { generateId } from "./utils/id"
 import { isNil } from "./utils/assertion"
+import { runIfFn } from "./utils/function"
 
 export type ModelDictionary = Record<KeyType, any>
+export type MaybeFunction<T, FnArgs> = T | ((arg: FnArgs) => T)
 
 export type ModelDefinitionValues<NestedDict> = {
   [K in keyof NestedDict]: NestedDict[K] extends any[]
@@ -16,19 +18,23 @@ export type ModelDefinitionValues<NestedDict> = {
     : () => NestedDict[K] // Default if none match
 }
 
+type ParamModelDefinition<Dict> = {
+  [K in keyof Dict]: MaybeFunction<ModelDefinitionValues<Dict[K]>, {}>
+}
+
 export type ModelDefinition<Dict> = {
   [K in keyof Dict]: ModelDefinitionValues<Dict[K]>
 }
 
-export function createDatabase<Dict extends ModelDictionary>(dictionary: ModelDefinition<Dict>) {
+export function createDatabase<Dict extends ModelDictionary>(dictionary: ParamModelDefinition<Dict>) {
   const modelDefinition = { ...dictionary }
 
   Object.entries(modelDefinition).forEach(([k, v]) => {
     const key = k as keyof Dict
-    const value = v as ModelDefinitionValues<Dict[typeof key]>
+    const value = runIfFn(v) as ModelDefinitionValues<Dict[typeof key]>
 
     const hasId = !isNil(value["id"]) && typeof value.id === "function"
-    const idFunction = hasId ? (value["id"] as PrimaryKeyGetter<PrimaryKeyType>) : () => generateId(`${key}-pk`)
+    const idFunction = hasId ? (value["id"] as PrimaryKeyGetter<PrimaryKeyType>) : () => generateId(`${String(key)}-pk`)
     const primaryKeyObjectKey = hasId ? "id" : "__pk"
 
     modelDefinition[key] = {
@@ -37,5 +43,5 @@ export function createDatabase<Dict extends ModelDictionary>(dictionary: ModelDe
     }
   })
 
-  return factory(modelDefinition)
+  return factory(modelDefinition as ModelDefinition<Dict>)
 }

@@ -29,10 +29,10 @@ interface APITypes {
 
 it("should allow to create database with relations", () => {
   const db = createDatabase<APITypes>({
-    user: {
+    user: () => ({
       id: () => generateId("user-pk"),
       name: () => `User ${generateId("user-name")}`,
-    },
+    }),
     toDo: {
       id: () => generateId("toDo-pk"),
       name: () => `Todo ${generateId("toDo-name")}`,
@@ -71,4 +71,17 @@ it("should create '__pk' property when id is missing", () => {
   expect(user).toHaveProperty("__pk")
   expect(user).toHaveProperty("randomId")
   expect(user).toHaveProperty("name")
+})
+
+it("should allow for model definition value to be a function", () => {
+  const fn = jest.fn()
+
+  const db = createDatabase({
+    user: () => {
+      fn()
+      return { randomId: () => generateId("user-pk"), name: () => `User ${generateId("user-name")}` }
+    },
+  })
+
+  expect(fn).toHaveBeenCalled()
 })

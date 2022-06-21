@@ -4,7 +4,7 @@
   "license": "MIT",
   "scripts": {
     "test": "jest",
-    "build": "tsc",
+    "build": "tsc --project tsconfig.build.json",
     "prepublishOnly": "npm run test && npm run build"
   },
   "description": "Create a mock type-safe database for integration tests.",
