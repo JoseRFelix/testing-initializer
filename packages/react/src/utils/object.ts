@@ -4,7 +4,7 @@ import { runIfFn } from "./function"
 export function overridePredefinedKeys<Dict extends Record<string, any>, Override extends Partial<Dict>>(
   originalDict: Dict,
   overrideDict: Override
-): Record<string, any> {
+): Dict {
   const originalKeys = Object.keys(originalDict)
   const newDict = { ...originalDict }
 
@@ -17,7 +17,13 @@ export function overridePredefinedKeys<Dict extends Record<string, any>, Overrid
   return newDict
 }
 
-export function resolveObjValues<Dict extends Record<string, any>>(originalDict: Dict) {
+type ResolveDictValueFunctions<Dict> = {
+  [K in keyof Dict]: Dict[K] extends (...args: any[]) => any ? ReturnType<Dict[K]> : Dict[K]
+}
+
+export function resolveObjValues<Dict extends Record<string, any>, Args>(
+  originalDict: Dict
+): ResolveDictValueFunctions<Dict> {
   const newDict = { ...originalDict }
   return Object.entries(newDict).reduce((acc, [key, value]) => {
     acc[key as keyof Dict] = runIfFn(value, acc)
