@@ -1,13 +1,12 @@
 import * as React from "react"
 import type { ComponentType, ReactElement } from "react"
-import { Assign } from "utility-types"
 
 import { runIfFn } from "./utils/function"
 import { overridePredefinedKeys, resolveObjValues } from "./utils/object"
 
 type MaybeFunction<T, FnArgs> = T | ((arg: FnArgs) => T)
 
-type RendererEvent = "onRender" | "onRemount" | "onBeforeRender"
+type RendererEvent = "render" | "remount" | "beforeRender"
 
 interface RendererOverrides<Props, ExtraProperties> {
   data?: MaybeFunction<Partial<ExtraProperties>, { initialData: ExtraProperties }>
@@ -19,23 +18,38 @@ interface RendererOverrides<Props, ExtraProperties> {
 
 type RendererEventCallback<Props, ExtraProperties> = (args: { data: ExtraProperties; props: Props }) => void
 
-class Renderer<Props extends object, ExtraProperties extends object> {
-  private component?: ComponentType<Props>
-  private renderFunction?: (ui: ReactElement) => any
+type RendererRenderFunction<ExtraProperties, RenderResult> = (
+  ui: ReactElement,
+  options?: { data: ExtraProperties }
+) => RenderResult
 
-  _events: Partial<Record<RendererEvent, RendererEventCallback<Props, ExtraProperties>>> = {}
-  _data: ExtraProperties = {} as ExtraProperties
-  _props: MaybeFunction<Props, ExtraProperties> = {} as Props
+type RendererRenderReturn<Props, ExtraProperties, TestingLibraryRenderResult> = ExtraProperties &
+  Props & {
+    remount: () => Promise<ReturnType<RendererRenderFunction<ExtraProperties, TestingLibraryRenderResult>>>
+    renderUtils: ReturnType<RendererRenderFunction<ExtraProperties, TestingLibraryRenderResult>>
+  }
+
+class Renderer<
+  Props extends object,
+  ExtraProperties extends object,
+  TestingLibraryRenderResult extends { unmount: () => void } = { unmount: () => void }
+> {
+  private component?: ComponentType<Props>
+  private renderFunction?: RendererRenderFunction<ExtraProperties, TestingLibraryRenderResult>
+
+  private _events: Partial<Record<RendererEvent, RendererEventCallback<Props, ExtraProperties>>> = {}
+  private _data: ExtraProperties = {} as ExtraProperties
+  private _props: MaybeFunction<Props, ExtraProperties> = {} as Props
 
   addData<K extends string, V>(
     name: K,
-    value: MaybeFunction<V, this["_data"]>
-  ): Renderer<Props, Assign<ExtraProperties, Record<K, V>>> {
+    value: MaybeFunction<V, typeof this._data>
+  ): Renderer<Props, ExtraProperties & Record<K, V>> {
     this._data[name as any] = value
-    return this as Renderer<Props, Assign<ExtraProperties, Record<K, V>>>
+    return this as Renderer<Props, ExtraProperties & Record<K, V>>
   }
 
-  setProps<V extends Props>(value: MaybeFunction<V, this["_data"]>): Renderer<V, ExtraProperties> {
+  setProps<V extends Props>(value: MaybeFunction<V, typeof this._data>): Renderer<V, ExtraProperties> {
     this._props = value
     return this as unknown as Renderer<V, ExtraProperties>
   }
@@ -45,9 +59,11 @@ class Renderer<Props extends object, ExtraProperties extends object> {
     return this
   }
 
-  setRenderFunction(renderFunction: (ui: ReactElement) => any) {
+  setRenderFunction<F extends (ui: ReactElement) => TestingLibraryRenderResult>(
+    renderFunction: F
+  ): Renderer<Props, ExtraProperties, ReturnType<F>> {
     this.renderFunction = renderFunction
-    return this
+    return this as unknown as Renderer<Props, ExtraProperties, ReturnType<F>>
   }
 
   on(eventName: RendererEvent, callback: RendererEventCallback<Props, ExtraProperties>) {
@@ -61,7 +77,9 @@ class Renderer<Props extends object, ExtraProperties extends object> {
     await eventCallback({ data, props })
   }
 
-  private async render(overrides: RendererOverrides<this["_props"], this["_data"]> = {}) {
+  private async render(
+    overrides: RendererOverrides<typeof this._props, typeof this._data> = {}
+  ): Promise<RendererRenderReturn<Props, ExtraProperties, TestingLibraryRenderResult>> {
     const Component = this.component as ComponentType<Props>
 
     const initialData = this._data
@@ -74,19 +92,23 @@ class Renderer<Props extends object, ExtraProperties extends object> {
     const overrideProps = runIfFn(overrides?.props, { initialData, initialProps, nextData: dataWithOverrides })
     const propsWithOverrides = overridePredefinedKeys(initialProps, overrideProps ?? {})
 
-    await this.triggerEvent("onBeforeRender", propsWithOverrides, dataWithOverrides)
+    await this.triggerEvent("beforeRender", propsWithOverrides, dataWithOverrides)
 
-    let renderUtils = this.renderFunction!(<Component {...propsWithOverrides} />)
+    const renderOptions = {
+      data: dataWithOverrides,
+    }
 
-    await this.triggerEvent("onRender", propsWithOverrides, dataWithOverrides)
+    let renderUtils = this.renderFunction!(<Component {...propsWithOverrides} />, renderOptions)
+
+    await this.triggerEvent("render", propsWithOverrides, dataWithOverrides)
 
     return {
       ...dataWithOverrides,
       ...propsWithOverrides,
       remount: async () => {
         renderUtils.unmount()
-        renderUtils = this.renderFunction!(<Component {...propsWithOverrides} />)
-        await this.triggerEvent("onRemount", propsWithOverrides, dataWithOverrides)
+        renderUtils = this.renderFunction!(<Component {...propsWithOverrides} />, renderOptions)
+        await this.triggerEvent("remount", propsWithOverrides, dataWithOverrides)
 
         return renderUtils
       },
@@ -103,7 +125,7 @@ class Renderer<Props extends object, ExtraProperties extends object> {
       throw new Error("Render function is not set")
     }
 
-    return this.render.bind(this)
+    return this.render.bind(this) as typeof this.render
   }
 }
 

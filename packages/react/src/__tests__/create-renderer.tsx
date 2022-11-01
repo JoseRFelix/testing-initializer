@@ -218,9 +218,9 @@ it("should call events, and pass data and props as parameters", async () => {
     .setProps(({ login, feature }) => ({ login, feature }))
     .setComponent(TestComponent)
     .setRenderFunction(render)
-    .on("onRender", onRender)
-    .on("onBeforeRender", onBeforeRender)
-    .on("onRemount", onRemount)
+    .on("render", onRender)
+    .on("beforeRender", onBeforeRender)
+    .on("remount", onRemount)
     .build()
 
   const { remount, login, feature } = await renderTestComponent()

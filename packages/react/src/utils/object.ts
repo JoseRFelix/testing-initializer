@@ -9,7 +9,7 @@ export function overridePredefinedKeys<Dict extends Record<string, any>, Overrid
   const newDict = { ...originalDict }
 
   Object.entries(overrideDict).map(([key, value]) => {
-    if (originalKeys.includes(key) && !isNil(value)) {
+    if (originalKeys.includes(key)) {
       newDict[key as keyof Dict] = value
     }
   })
