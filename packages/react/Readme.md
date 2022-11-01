@@ -93,17 +93,17 @@ import { createRenderer, createDatabase, generateId } from "@testing-initializer
 
 ...
 
-const renderTestComponent = createRenderer({
-    component: TestComponent,
-    data: {
-      currentUser: db.user.create(),
-      toDos: [db.toDo.create(), db.toDo.create(), db.toDo.create()],
-    },
-    props: ({ currentUser, toDos }) => ({
+const renderTestComponent = createRenderer()
+    .addData("currentUser", () => db.user.create())
+    .addData("toDos", () => [db.toDo.create(), db.toDo.create(), db.toDo.create()])
+    .setProps(({ currentUser, toDos }) => ({
       project: db.project.create({ toDos, user: currentUser }) as unknown as Project,
-    }),
-    renderFunction: render,
-  })
+      currentUser,
+      toDos,
+    }))
+    .setComponent(TestComponent)
+    .setRenderFunction(render)
+    .build()
 ```
 
 Notice the `data` property. These extra properties are useful for getting generated data outside of the component props.
@@ -120,7 +120,11 @@ We can also render override its `data` or `props`:
 
 ```ts
 it("...", () => {
-  renderTestComponent({ currentUser: db.user.create({ name: "User override" }) })
+  renderTestComponent({
+    data: {
+      currentUser: db.user.create({ name: "User override" }),
+    },
+  })
 })
 ```
 
